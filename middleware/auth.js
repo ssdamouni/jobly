@@ -35,7 +35,6 @@ function authenticateJWT(req, res, next) {
 
 function ensureLoggedIn(req, res, next) {
   try {
-    console.log(res.locals.user)
     if (!res.locals.user) throw new UnauthorizedError();
     return next();
   } catch (err) {
@@ -43,6 +42,7 @@ function ensureLoggedIn(req, res, next) {
   }
 }
 function ensureAdmin(req, res, next) {
+  console.log(`req: ${JSON.stringify(req)}`)
   if (!res.locals.user){
     const err = new UnauthorizedError("Unauthorized", 401);
     return next(err);

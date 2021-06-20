@@ -84,7 +84,7 @@ describe("ensureLoggedIn", function () {
 describe("ensureAdmin", function () {
   test("works", function () {
     expect.assertions(1);
-    const req = {};
+    const req = { params : {username: "test"}};
     const res = { locals: { user: { username: "test", is_admin: true } } };
     const next = function (err) {
       expect(err).toBeFalsy();
@@ -93,12 +93,12 @@ describe("ensureAdmin", function () {
   });
 
   test("doesn't work if not an admin", function () {
-    expect.assertions(2);
-    const req = {};
+    expect.assertions(1);
+    const req ={ params : {username: "fake"}};
     const res = { locals: { user: { username: "test", is_admin: false } } };
     const next = function (err) {
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };
-    ensureLoggedIn(req, res, next);
+    ensureAdmin(req, res, next);
   });
 });
