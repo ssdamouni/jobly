@@ -111,6 +111,43 @@ describe("get", function () {
   });
 });
 
+/************************************** filters */
+
+describe("findFiltered", function () {
+  test("works", async function () {
+    let company = await Company.findFiltered("name", "C1");
+    expect(company).toEqual([{
+      handle: "c1",
+      name: "C1",
+      description: "Desc1",
+      numEmployees: 1,
+      logoUrl: "http://c1.img",
+    }]);
+  });
+
+  test("not found if no such company", async function () {
+    try {
+      await Company.findFiltered("name", "nope");
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+});
+
+describe("findFilteredMaxAndMin", function () {
+  test("works", async function () {
+    let company = await Company.findFilteredMaxAndMin(1, 3);
+    expect(company).toEqual([{
+      handle: "c2",
+      name: "C2",
+      numEmployees: 2,
+      description: "Desc2",
+      logoUrl: "http://c2.img",
+    }]);
+  });
+});
+
+
 /************************************** update */
 
 describe("update", function () {

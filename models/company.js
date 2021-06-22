@@ -94,11 +94,13 @@ class Company {
            FROM companies
            WHERE num_employees < $1
            ORDER BY name`, [fitlerInput]);
+      
+
+    if (!companiesRes) throw new NotFoundError(`No companies match this search`);
       return companiesRes.rows;
     }
   }
   static async findFilteredMaxAndMin(min, max) {
-    console.log(min, max)
     const companiesRes = await db.query(
           `SELECT handle,
                   name,
